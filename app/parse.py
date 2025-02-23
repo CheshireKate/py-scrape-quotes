@@ -48,15 +48,14 @@ def get_all_pages_quotes() -> [Quote]:
 
         if not next_button:
             break
-        text = requests.get(BASE_URL, params={"page": page_num})
-        next_page = BeautifulSoup(text, "html.parser")
+        next_page = BeautifulSoup(url, "html.parser")
         all_quotes.extend(get_single_page_quotes(next_page))
         page_num += 1
 
     return all_quotes
 
 def write_to_csv(quotes: [Quote], output_csv_path) -> None:
-    with open("results.csv", "w") as f:
+    with open(output_csv_path, "w") as f:
         writer = csv.writer(f)
         writer.writerow(QUOTE_FIELDS)
         writer.writerows([astuple(quote) for quote in quotes])
